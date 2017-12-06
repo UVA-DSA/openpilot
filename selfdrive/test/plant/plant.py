@@ -147,7 +147,7 @@ class Plant(object):
   def current_time(self):
     return float(self.rk.frame) / self.rate
 
-  def step(self, v_lead=0.0, cruise_buttons=None, grade=0.0, publish_model = True):
+  def step(self, v_lead=0.0, cruise_buttons=None, grade=0.0, frameIdx=0, pathOffset=0.0, publish_model = True):     # frameIdx and pathOffset added by Hasnat
     gen_dbc, gen_signals, gen_checks = get_can_signals(CP)
     sgs = [s[0] for s in gen_signals]
     msgs = [s[1] for s in gen_signals]
@@ -206,9 +206,33 @@ class Plant(object):
       a_rel = 0
     lateral_pos_rel = 0.
 
+    ##### Detect collision (H1) -- added by Hasnat
+    if d_rel <= 0:
+      print "Collision Occured with Lead Vehicle"
+    ##################
+
+    ##### Detect sudden stop (H2) -- added by Hasnat
+    if self.speed_sensor(speed)==0 and d_rel >= 100:
+      print "Vehicle has been stopped suddenly although there is no Lead Vehicle"
+    ##################
+
+
+    ########### manual faults (brake/steer error) -- added by Hasnat
+    '''
+    if frameIdx < 500:# or frameIdx > 2000:
+      self.brake_error = 0;
+      #self.user_gas = 0
+    else:
+      self.brake_error = 1;
+      #self.user_gas = 255.0
+    '''
+    #########################
+
     # print at 5hz
+    '''
     if (self.rk.frame%(self.rate/5)) == 0:
       print "%6.2f m  %6.2f m/s  %6.2f m/s2   %.2f ang   gas: %.2f  brake: %.2f  steer: %5.2f     lead_rel: %6.2f m  %6.2f m/s" % (distance, speed, acceleration, self.angle_steer, gas, brake, steer_torque, d_rel, v_rel)
+    '''
 
     # ******** publish the car ********
     vls = [self.speed_sensor(speed), self.speed_sensor(speed), self.speed_sensor(speed), self.speed_sensor(speed), self.speed_sensor(speed),
@@ -253,6 +277,41 @@ class Plant(object):
     Plant.logcan.send(can_list_to_can_capnp(can_msgs).to_bytes())
 
     # ******** publish a fake model going straight and fake calibration ********
+    ###### Modified path model to test the lateral control -- Hasnat
+    if publish_model:
+      md = messaging.new_message()
+      cal = messaging.new_message()
+      md.init('model')
+      cal.init('liveCalibration')
+      md.model.frameId = frameIdx
+
+      md.model.leftLane.points = [-1.85]*50     # minimum lane width 2*1.85 = 3.7m
+      md.model.leftLane.prob = 1.0
+      md.model.leftLane.std = 1.0
+
+      md.model.rightLane.points = [1.85]*50
+      md.model.rightLane.prob = 1.0
+      md.model.rightLane.std = 1.0
+
+      #md.model.path.points = [0.0]*50
+      md.model.path.points = [pathOffset]*50
+      md.model.path.prob = 1.0
+      md.model.path.std = 1.0
+
+      cal.liveCalibration.calStatus = 1
+      cal.liveCalibration.calPerc = 100
+      # fake values?
+      Plant.model.send(md.to_bytes())
+      Plant.cal.send(cal.to_bytes())
+
+      ####### Detect out of lane (H3) -- added by Hasnat
+      if (md.model.path.points[0] + 0.9 > md.model.rightLane.points[0]) or (md.model.path.points[0] - 0.9 < md.model.leftLane.points[0]):  # 0.9 is the half of CIVIC's total width (~1.8m)
+        print "Vehicle is Out of Lane"
+        print "Center: " + str(md.model.path.points[0])
+      ######################
+
+    ###### Original Path Model
+    '''
     if publish_model:
       md = messaging.new_message()
       cal = messaging.new_message()
@@ -268,6 +327,7 @@ class Plant(object):
       # fake values?
       Plant.model.send(md.to_bytes())
       Plant.cal.send(cal.to_bytes())
+    '''
 
     # ******** update prevs ********
     self.speed = speed

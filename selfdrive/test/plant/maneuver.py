@@ -22,6 +22,9 @@ class Maneuver(object):
     self.duration = duration
     self.title = title
 
+    self.frameIdx = 0  # added by Hasnat
+    self.pathOffset = 0.0;  # added by Hasnat
+
   def evaluate(self):
     """runs the plant sim and returns (score, run_data)"""
     plant = Plant(
@@ -45,7 +48,12 @@ class Maneuver(object):
       grade = np.interp(plant.current_time(), self.grade_breakpoints, self.grade_values)
       speed_lead = np.interp(plant.current_time(), self.speed_lead_breakpoints, self.speed_lead_values)
 
-      distance, speed, acceleration, distance_lead, brake, gas, steer_torque, live100 = plant.step(speed_lead, current_button, grade)
+      self.frameIdx = self.frameIdx + 1    # added by Hasnat
+
+      distance, speed, acceleration, distance_lead, brake, gas, steer_torque, live100 = plant.step(speed_lead, current_button, grade, self.frameIdx, self.pathOffset) # self.frameIdx and self.pathOffset added by Hasnat
+
+      self.pathOffset = self.pathOffset + 0.001  #added by Hasnat
+
       if live100:
         last_live100 = live100[-1]
 

@@ -219,6 +219,10 @@ def state_control(plan, CS, CP, state, events, v_cruise_kph, AM, rk, awareness_s
   enabled = isEnabled(state)
   active = isActive(state)
 
+  ####### to check the comma control is enabled or not -- Hasnat
+  #print "======== enabled??"
+  #print enabled
+
   for b in CS.buttonEvents:
     # any button event resets awarenesss_status
     awareness_status = 1.
