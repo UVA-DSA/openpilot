@@ -147,7 +147,7 @@ class Plant(object):
   def current_time(self):
     return float(self.rk.frame) / self.rate
 
-  def step(self, outfile, hazardfile, v_lead=0.0, cruise_buttons=None, grade=0.0, frameIdx=0, pathOffset=0.0, publish_model = True):     # outfile, hazardfile, frameIdx and pathOffset added by Hasnat
+  def step(self, v_lead=0.0, cruise_buttons=None, grade=0.0, frameIdx=0, pathOffset=0.0, publish_model = True):     # frameIdx and pathOffset added by Hasnat
     gen_dbc, gen_signals, gen_checks = get_can_signals(CP)
     sgs = [s[0] for s in gen_signals]
     msgs = [s[1] for s in gen_signals]
@@ -212,13 +212,11 @@ class Plant(object):
     ##### Detect collision (H1) -- added by Hasnat
     if d_rel <= 0:
       print "Collision Occured with Lead Vehicle"
-      hazardfile.write('HAZARD: H1-Collision Occured with Lead Vehicle')
     ##################
 
     ##### Detect sudden stop (H2) -- added by Hasnat
     if self.speed_sensor(speed)==0 and d_rel >= 100:
-      print "Vehicle stopped suddenly although there is no Lead Vehicle"
-      hazardfile.write('HAZARD: H2-Vehicle stopped suddenly although there is no Lead Vehicle')
+      print "Vehicle has been stopped suddenly although there is no Lead Vehicle"
     ##################
 
     '''
@@ -226,10 +224,7 @@ class Plant(object):
     if (self.rk.frame%(self.rate/5)) == 0:
       print "%6.2f m  %6.2f m/s  %6.2f m/s2   %.2f ang   gas: %.2f  brake: %.2f  steer: %5.2f     lead_rel: %6.2f m  %6.2f m/s" % (distance, speed, acceleration, self.angle_steer, gas, brake, steer_torque, d_rel, v_rel)
     '''
-    if (self.rk.frame%(self.rate/5)) == 0:
-      #outData = 'Frame %d: %6.2f m  %6.2f m/s  %6.2f m/s2   %.2f ang   gas: %.2f  brake: %.2f  steer: %5.2f     lead_rel: %6.2f m  %6.2f m/s \n'  % (frameIdx, distance, speed, acceleration, self.angle_steer, gas, brake, steer_torque, d_rel, v_rel)
-      outData = '%d, %6.2f,  %6.2f,  %6.2f,   %.2f,   %.2f,  %.2f,  %5.2f,    %6.2f,  %6.2f \n'  % (frameIdx, distance, speed, acceleration, self.angle_steer, gas, brake, steer_torque, d_rel, v_rel)
-      outfile.write(outData)      
+      
     # ******** publish the car ********
     vls = [self.speed_sensor(speed), self.speed_sensor(speed), self.speed_sensor(speed), self.speed_sensor(speed), self.speed_sensor(speed),
            self.angle_steer, self.angle_steer_rate, 0, self.gear_choice, speed!=0,
@@ -266,8 +261,6 @@ class Plant(object):
 
       ###incorrect RADAR input
       #HOOK#
-      if frameIdx>=500 and frameIdx<=800:
-        d_rel+=10
 
       radar_state_msg = '\x79\x00\x00\x00\x00\x00\x00\x00'
       radar_msg = to_3_byte(d_rel*16.0) + \
@@ -311,7 +304,6 @@ class Plant(object):
       if (md.model.path.points[0] + 0.9 > md.model.rightLane.points[0]) or (md.model.path.points[0] - 0.9 < md.model.leftLane.points[0]):  # 0.9 is the half of CIVIC's total width (~1.8m)
         print "Vehicle is Out of Lane"
         print "Center: " + str(md.model.path.points[0])
-        hazardfile.write('HAZARD: H3-Vehicle is Out of Lane')
       ######################
     #'''
     ###### Original Path Model

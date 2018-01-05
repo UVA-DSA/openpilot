@@ -368,7 +368,12 @@ class AlertManager(object):
     if self.alertPresent():
       self.alert_start_time = cur_time
       self.current_alert = self.activealerts[0]
+      print '============================'
       print self.current_alert
+      '''Write the alerts to a file -- Hasnat'''
+      alert_file = '/tmp/openpilot/selfdrive/test/tests/plant/out/longitudinal/alerts.txt'
+      with open(alert_file, 'a+') as alertfile:
+        alertfile.write('[Alert] %s\n' % self.current_alert)
 
     # start with assuming no alerts
     self.alert_text_1 = ""

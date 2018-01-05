@@ -266,8 +266,6 @@ class Plant(object):
 
       ###incorrect RADAR input
       #HOOK#
-      if frameIdx>=500 and frameIdx<=800:
-        d_rel+=10
 
       radar_state_msg = '\x79\x00\x00\x00\x00\x00\x00\x00'
       radar_msg = to_3_byte(d_rel*16.0) + \

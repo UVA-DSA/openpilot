@@ -91,7 +91,7 @@ WORKERS = 8
 def run_maneuver_worker(k):
   output_dir = os.path.join(os.getcwd(), 'out/longitudinal')
   for i, man in enumerate(maneuvers[k::WORKERS]):
-    score, plot = man.evaluate()
+    score, plot = man.evaluate(output_dir)
     plot.write_plot(output_dir, "maneuver" + str(WORKERS * i + k+1).zfill(2))
 
 for k in xrange(WORKERS):

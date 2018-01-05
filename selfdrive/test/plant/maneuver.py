@@ -25,7 +25,23 @@ class Maneuver(object):
     self.frameIdx = 0  # added by Hasnat
     self.pathOffset = 0.0;  # added by Hasnat
 
-  def evaluate(self):
+  def evaluate(self, output_dir):
+
+    '''Create files to record the outputs and alerts/hazards -- Hasnat'''
+    out_file = output_dir + '/outputs.csv'
+    hazard_file = output_dir + '/hazards.txt'
+    alert_file = output_dir + '/alerts.txt'
+    outfile = open(out_file, 'w')
+    outfile.write('frameIdx, distance(m), speed(m/s), acceleration(m/s2), angle_steer, gas, brake, steer_torque, d_rel(m), v_rel(m/s)\n')
+
+    hazardfile = open(hazard_file, 'w')
+    hazardfile.write('*********Hazards generated in this test run**********\n')
+
+    alertfile = open(alert_file, 'w')
+    alertfile.write('*********Alerts generated in this test run**********\n')
+    alertfile.close()
+  
+    
     """runs the plant sim and returns (score, run_data)"""
     plant = Plant(
       lead_relevancy = self.lead_relevancy,
@@ -50,7 +66,7 @@ class Maneuver(object):
 
       self.frameIdx = self.frameIdx + 1    # added by Hasnat
 
-      distance, speed, acceleration, distance_lead, brake, gas, steer_torque, live100 = plant.step(speed_lead, current_button, grade, self.frameIdx, self.pathOffset) # self.frameIdx and self.pathOffset added by Hasnat
+      distance, speed, acceleration, distance_lead, brake, gas, steer_torque, live100 = plant.step(outfile, hazardfile, speed_lead, current_button, grade, self.frameIdx, self.pathOffset) # outfile, hazardfile, self.frameIdx and self.pathOffset added by Hasnat
 
       self.pathOffset = self.pathOffset + 0.001  #added by Hasnat
 
@@ -75,6 +91,9 @@ class Maneuver(object):
           a_target_min=last_live100.aTargetMin, a_target_max=last_live100.aTargetMax)
     
     print "maneuver end"
+
+    outfile.close()
+    alertfile.close()
 
     return (None, plot)
 
