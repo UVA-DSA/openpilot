@@ -134,6 +134,8 @@ class Plant(object):
 
     self.cp = get_car_can_parser()
 
+    self.delta_lane = 0.0   # added to cumulatively add the delta_lane [for checking H3]
+
   def close(self):
     Plant.logcan.close()
     Plant.model.close()
@@ -147,7 +149,7 @@ class Plant(object):
   def current_time(self):
     return float(self.rk.frame) / self.rate
 
-  def step(self, outfile, hazardfile, v_lead=0.0, cruise_buttons=None, grade=0.0, frameIdx=0, pathOffset=0.0, publish_model = True):     # outfile, hazardfile, frameIdx and pathOffset added by Hasnat
+  def step(self, outfile, hazardfile, v_lead=0.0, cruise_buttons=None, grade=0.0, frameIdx=0, pathOffset=0.0, lLane=0.0, rLane=0.0, delta_lane=0.0, publish_model = True):     # outfile, hazardfile, frameIdx and pathOffset added by Hasnat
     gen_dbc, gen_signals, gen_checks = get_can_signals(CP)
     sgs = [s[0] for s in gen_signals]
     msgs = [s[1] for s in gen_signals]
@@ -198,7 +200,7 @@ class Plant(object):
 
     # ******** lateral ********
     self.angle_steer -= (steer_torque/10.0) * self.ts
-
+    #print self.angle_steer
     # *** radar model ***
     if self.lead_relevancy:
       d_rel = np.maximum(0., distance_lead - distance)
@@ -220,7 +222,7 @@ class Plant(object):
       print "Vehicle stopped suddenly although there is no Lead Vehicle"
       hazardfile.write('HAZARD: H2-Vehicle stopped suddenly although there is no Lead Vehicle')
     ##################
-
+    #print brake
     '''
     # print at 5hz
     if (self.rk.frame%(self.rate/5)) == 0:
@@ -285,12 +287,11 @@ class Plant(object):
       md.init('model')
       cal.init('liveCalibration')
       md.model.frameId = frameIdx
-
-      md.model.leftLane.points = [-1.85]*50     # minimum lane width 2*1.85 = 3.7m
+      md.model.leftLane.points = [lLane]*50     # minimum lane width 2*1.85 = 3.7m
       md.model.leftLane.prob = 1.0
       md.model.leftLane.std = 1.0
 
-      md.model.rightLane.points = [1.85]*50
+      md.model.rightLane.points = [rLane]*50
       md.model.rightLane.prob = 1.0
       md.model.rightLane.std = 1.0
 
@@ -306,9 +307,12 @@ class Plant(object):
       Plant.cal.send(cal.to_bytes())
 
       ####### Detect out of lane (H3) -- added by Hasnat
-      if (md.model.path.points[0] + 0.9 > md.model.rightLane.points[0]) or (md.model.path.points[0] - 0.9 < md.model.leftLane.points[0]):  # 0.9 is the half of CIVIC's total width (~1.8m)
+      self.delta_lane += delta_lane
+      if (1.85-self.delta_lane < 0.9) or (-1.85-self.delta_lane > - 0.9):  # 0.9 is the half of CIVIC's total width (~1.8m)
         print "Vehicle is Out of Lane"
-        print "Center: " + str(md.model.path.points[0])
+        print "Path: " + str(md.model.path.points[0]+self.delta_lane)
+        #print "leftLane: "+str(md.model.leftLane.points[0])
+        #print "rightLane: "+str(md.model.rightLane.points[0])
         hazardfile.write('HAZARD: H3-Vehicle is Out of Lane')
       ######################
     #'''
@@ -341,7 +345,7 @@ class Plant(object):
     self.distance_lead_prev = distance_lead
 
     self.rk.keep_time()
-    return (distance, speed, acceleration, distance_lead, brake, gas, steer_torque, live_msgs)
+    return (distance, speed, acceleration, distance_lead, brake, gas, steer_torque, live_msgs, self.angle_steer)   # added self.angle_steer -- Hasnat
 
 # simple engage in standalone mode
 def plant_thread(rate=100):

@@ -1,6 +1,7 @@
 import math
 import numpy as np
 from common.numpy_fast import clip, interp
+from common.realtime import sec_since_boot
 import selfdrive.messaging as messaging
 
 # TODO: we compute a_pcm but we don't use it, as accelOverride is hardcoded in controlsd
@@ -239,6 +240,9 @@ def compute_speed_with_leads(v_ego, angle_steers, v_pid, l1, l2, CP):
   a_target, a_pcm = limit_accel_in_turns(v_ego, angle_steers, a_target, a_pcm, CP)
   jerk_factor = 0.
 
+  ### Faulty control algorithm
+  #a_targetH2:HOOK#
+
   if l1 is not None and l1.status:
     #*** process noisy a_lead signal from radar processing ***
     a_lead_p = process_a_lead(l1.aLeadK)
@@ -273,6 +277,9 @@ def compute_speed_with_leads(v_ego, angle_steers, v_pid, l1, l2, CP):
     # we can now limit a_target to a_lim
     a_target = np.clip(a_target1, a_lim[0], a_lim[1])
     a_pcm = np.clip(a_pcm1, a_lim[0], a_lim[1]).tolist()
+
+    ### Faulty control algorithm
+    #a_target:HOOK#
 
     #*** compute max factor ***
     jerk_factor = calc_jerk_factor(l1.dRel, l1.vRel)

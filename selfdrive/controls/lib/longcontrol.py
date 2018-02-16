@@ -1,5 +1,6 @@
 import numpy as np
 from common.numpy_fast import clip, interp
+from common.realtime import sec_since_boot
 from selfdrive.config import Conversions as CV
 from selfdrive.controls.lib.pid import PIController
 
@@ -93,6 +94,9 @@ class LongControl(object):
 
     # limit max target speed based on cruise setting
     v_target = min(v_target_lead, v_cruise * CV.KPH_TO_MS)
+    ### Faulty control algorithm
+    #v_target:HOOK#
+
     rate = 100.0
     max_speed_delta_up = a_target[1] * 1.0 / rate
     max_speed_delta_down = a_target[0] * 1.0 / rate
@@ -150,6 +154,9 @@ class LongControl(object):
       self.v_pid = v_ego
       self.pid.reset()
       self.pid.i = starting_Ui
+
+    ### Faulty control algorithm
+    #output_gb:HOOK#
 
     self.last_output_gb = output_gb
     final_gas = clip(output_gb, 0., gas_max)

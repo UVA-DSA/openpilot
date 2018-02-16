@@ -2,6 +2,7 @@ import math
 from selfdrive.controls.lib.pid import PIController
 from selfdrive.controls.lib.lateral_mpc import libmpc_py
 from common.numpy_fast import clip, interp
+from common.realtime import sec_since_boot
 
 
 # 100ms is a rule of thumb estimation of lag from image processing to actuator command
@@ -54,6 +55,7 @@ class LatControl(object):
       r_poly = libmpc_py.ffi.new("double[4]", list(PL.PP.r_poly))
       p_poly = libmpc_py.ffi.new("double[4]", list(PL.PP.p_poly))
 
+
       # account for actuation delay
       self.cur_state = calc_states_after_delay(self.cur_state, v_ego, angle_steers, curvature_factor, VM.CP.sR)
 
@@ -68,6 +70,9 @@ class LatControl(object):
       self.angle_steers_des = float(math.degrees(delta_desired * VM.CP.sR) + angle_offset)
       self.mpc_updated = True
 
+      ### Faulty control algorithm
+      #angle_steers_des:HOOK#
+
     if v_ego < 0.3 or not active:
       output_steer = 0.0
       self.pid.reset()
@@ -77,6 +82,8 @@ class LatControl(object):
       self.pid.neg_limit = -steer_max
       steer_feedforward = self.angle_steers_des * v_ego**2  # proportional to realigning tire momentum (~ lateral accel)
       output_steer = self.pid.update(self.angle_steers_des, angle_steers, check_saturation=(v_ego > 10), override=steer_override, feedforward=steer_feedforward)
+      ### Faulty control algorithm
+      #output_steer:HOOK#
 
     self.sat_flag = self.pid.saturated
     return output_steer

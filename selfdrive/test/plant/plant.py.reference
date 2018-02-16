@@ -7,7 +7,7 @@ import numpy as np
 
 from opendbc import DBC_PATH
 
-from common.realtime import Ratekeeper
+from common.realtime import sec_since_boot, Ratekeeper
 
 import selfdrive.messaging as messaging
 from selfdrive.services import service_list
@@ -134,6 +134,8 @@ class Plant(object):
 
     self.cp = get_car_can_parser()
 
+    self.delta_lane = 0.0   # added to cumulatively add the delta_lane [for checking H3]
+
   def close(self):
     Plant.logcan.close()
     Plant.model.close()
@@ -147,7 +149,7 @@ class Plant(object):
   def current_time(self):
     return float(self.rk.frame) / self.rate
 
-  def step(self, outfile, hazardfile, v_lead=0.0, cruise_buttons=None, grade=0.0, frameIdx=0, pathOffset=0.0, publish_model = True):     # outfile, hazardfile, frameIdx and pathOffset added by Hasnat
+  def step(self, reportHazardH1, reportHazardH2, reportHazardH3, outfile, hazardfile, v_lead=0.0, cruise_buttons=None, grade=0.0, frameIdx=0, pathOffset=0.0, lLane=0.0, rLane=0.0, delta_lane=0.0, publish_model = True):     # outfile, hazardfile, frameIdx and pathOffset added by Hasnat
     gen_dbc, gen_signals, gen_checks = get_can_signals(CP)
     sgs = [s[0] for s in gen_signals]
     msgs = [s[1] for s in gen_signals]
@@ -184,8 +186,6 @@ class Plant(object):
 
     distance_lead = self.distance_lead_prev + v_lead * self.ts
 
-    #print "+++++++++++ Plant"
-    #print brake
 
     # ******** run the car ********
     speed, acceleration = car_plant(self.distance_prev, self.speed_prev, grade, gas, brake)
@@ -210,17 +210,21 @@ class Plant(object):
     lateral_pos_rel = 0.
 
     ##### Detect collision (H1) -- added by Hasnat
-    if d_rel <= 0:
+    if d_rel <= 0 and self.delta_lane < (2.75) and self.delta_lane > (-2.75):   ## 1.85+0.9=2.75 --  to check whether the vehicle is in same line with lead or not
       print "Collision Occured with Lead Vehicle"
-      hazardfile.write('HAZARD: H1-Collision Occured with Lead Vehicle')
+      if reportHazardH1 == True:
+        hazardfile.write('HAZARD || H1 || Collision Occured with Lead Vehicle || Time(sec)=%f\n' % (sec_since_boot()))
+        reportHazardH1 = False;
     ##################
 
     ##### Detect sudden stop (H2) -- added by Hasnat
     if self.speed_sensor(speed)==0 and d_rel >= 100:
       print "Vehicle stopped suddenly although there is no Lead Vehicle"
-      hazardfile.write('HAZARD: H2-Vehicle stopped suddenly although there is no Lead Vehicle')
+      if reportHazardH2 == True:
+        hazardfile.write('HAZARD || H2 || Vehicle stopped suddenly although there is no Lead Vehicle || Time(sec)=%f\n' % (sec_since_boot()))
+        reportHazardH2 = False;
     ##################
-
+    #print brake
     '''
     # print at 5hz
     if (self.rk.frame%(self.rate/5)) == 0:
@@ -231,7 +235,11 @@ class Plant(object):
       outData = '%d, %6.2f,  %6.2f,  %6.2f,   %.2f,   %.2f,  %.2f,  %5.2f,    %6.2f,  %6.2f \n'  % (frameIdx, distance, speed, acceleration, self.angle_steer, gas, brake, steer_torque, d_rel, v_rel)
       outfile.write(outData)      
     # ******** publish the car ********
-    vls = [self.speed_sensor(speed), self.speed_sensor(speed), self.speed_sensor(speed), self.speed_sensor(speed), self.speed_sensor(speed),
+    speed2send = self.speed_sensor(speed)   ### added to send incorrect speed value -- Hasnat
+    ### Incorrect Process Model
+    #speed:HOOK#
+    #angle_steer:HOOK#
+    vls = [speed2send, speed2send, speed2send, speed2send, speed2send,
            self.angle_steer, self.angle_steer_rate, 0, self.gear_choice, speed!=0,
            0, 0, 0, 0,
            self.v_cruise, not self.seatbelt, self.seatbelt, self.brake_pressed, 0.,
@@ -265,7 +273,7 @@ class Plant(object):
     if self.rk.frame % 5 == 0:
 
       ###incorrect RADAR input
-      #HOOK#
+      #d_rel:HOOK#
 
       radar_state_msg = '\x79\x00\x00\x00\x00\x00\x00\x00'
       radar_msg = to_3_byte(d_rel*16.0) + \
@@ -274,6 +282,9 @@ class Plant(object):
                   "0f00000"
       can_msgs.append([0x400, 0, radar_state_msg, 1])
       can_msgs.append([0x445, 0, radar_msg.decode("hex"), 1])
+
+    ###incorrect RADAR input
+    #radar_none:HOOK#
     Plant.logcan.send(can_list_to_can_capnp(can_msgs).to_bytes())
 
     # ******** publish a fake model going straight and fake calibration ********
@@ -285,12 +296,11 @@ class Plant(object):
       md.init('model')
       cal.init('liveCalibration')
       md.model.frameId = frameIdx
-
-      md.model.leftLane.points = [-1.85]*50     # minimum lane width 2*1.85 = 3.7m
+      md.model.leftLane.points = [lLane]*50     # minimum lane width 2*1.85 = 3.7m
       md.model.leftLane.prob = 1.0
       md.model.leftLane.std = 1.0
 
-      md.model.rightLane.points = [1.85]*50
+      md.model.rightLane.points = [rLane]*50
       md.model.rightLane.prob = 1.0
       md.model.rightLane.std = 1.0
 
@@ -302,14 +312,24 @@ class Plant(object):
       cal.liveCalibration.calStatus = 1
       cal.liveCalibration.calPerc = 100
       # fake values?
-      Plant.model.send(md.to_bytes())
+      ###incorrect RADAR input
+      #md_none:HOOK#
+      if frameIdx/100>=0 and frameIdx/100<=3:
+        Plant.model.send(md.to_bytes())
+      else:
+        fltTime=open('/tmp/openpilot/selfdrive/test/tests/plant/out/longitudinal/fault_times.txt','a+')
+        fltTime.write(str(sec_since_boot())+'||')
+        fltTime.close()
       Plant.cal.send(cal.to_bytes())
 
       ####### Detect out of lane (H3) -- added by Hasnat
-      if (md.model.path.points[0] + 0.9 > md.model.rightLane.points[0]) or (md.model.path.points[0] - 0.9 < md.model.leftLane.points[0]):  # 0.9 is the half of CIVIC's total width (~1.8m)
+      self.delta_lane += delta_lane
+      if (1.85-self.delta_lane < 0.9) or (-1.85-self.delta_lane > - 0.9):  # 0.9 is the half of CIVIC's total width (~1.8m)
         print "Vehicle is Out of Lane"
-        print "Center: " + str(md.model.path.points[0])
-        hazardfile.write('HAZARD: H3-Vehicle is Out of Lane')
+        print "Path: " + str(md.model.path.points[0]+self.delta_lane)
+        if reportHazardH3 == True:
+          hazardfile.write('HAZARD || H3 || Vehicle is Out of Lane || Time(sec)=%f\n' % (sec_since_boot()))
+          reportHazardH3 = False
       ######################
     #'''
     ###### Original Path Model
@@ -341,7 +361,7 @@ class Plant(object):
     self.distance_lead_prev = distance_lead
 
     self.rk.keep_time()
-    return (distance, speed, acceleration, distance_lead, brake, gas, steer_torque, live_msgs)
+    return (distance, speed, acceleration, distance_lead, brake, gas, steer_torque, live_msgs, self.angle_steer, reportHazardH1, reportHazardH2, reportHazardH3)   # added self.angle_steer -- Hasnat
 
 # simple engage in standalone mode
 def plant_thread(rate=100):

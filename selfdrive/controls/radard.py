@@ -193,6 +193,9 @@ def radard_thread(gctx=None):
       dat.liveTracks[cnt].aRel = float(tracks[ids].aRel)
       dat.liveTracks[cnt].stationary = tracks[ids].stationary
       dat.liveTracks[cnt].oncoming = tracks[ids].oncoming
+      ###Incorrect process model
+      #d_rel:HOOK#
+
     liveTracks.send(dat.to_bytes())
 
     idens = tracks.keys()
@@ -225,7 +228,8 @@ def radard_thread(gctx=None):
                      if c.is_potential_lead(v_ego)]
     lead_clusters.sort(key=lambda x: x.dRel)
     lead_len = len(lead_clusters)
-
+    #for c in clusters:
+     #   print c.is_potential_lead(v_ego)
     # *** extract the second lead from the whole set of leads ***
     lead2_clusters = [c for c in lead_clusters
                       if c.is_potential_lead2(lead_clusters)]

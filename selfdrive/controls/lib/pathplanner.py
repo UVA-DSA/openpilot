@@ -1,4 +1,5 @@
 from common.numpy_fast import interp
+from common.realtime import sec_since_boot
 from selfdrive.controls.lib.latcontrol_helpers import model_polyfit, calc_desired_path, compute_path_pinv
 
 
@@ -14,6 +15,7 @@ class PathPlanner(object):
     self.lane_width_estimate = 3.7
     self.lane_width_certainty = 1.0
     self.lane_width = 3.7
+    self.frame = 0  # added by Hasnat
 
   def update(self, v_ego, md):
     if md is not None:
@@ -24,6 +26,9 @@ class PathPlanner(object):
       p_prob = 1.  # model does not tell this probability yet, so set to 1 for now
       l_prob = md.model.leftLane.prob  # left line prob
       r_prob = md.model.rightLane.prob  # right line prob
+
+      ### Faulty control algorithm
+      #plr_poly:HOOK#
 
       # Find current lanewidth
       lr_prob = l_prob * r_prob
@@ -47,6 +52,10 @@ class PathPlanner(object):
       self.d_poly, self.c_poly, self.c_prob = calc_desired_path(
         l_poly, r_poly, p_poly, l_prob, r_prob, p_prob, v_ego, self.lane_width)
 
+      ### Faulty control algorithm
+      #d_poly:HOOK#
+
+
       self.r_poly = r_poly
       self.r_prob = r_prob
 
@@ -55,3 +64,5 @@ class PathPlanner(object):
 
       self.p_poly = p_poly
       self.p_prob = p_prob
+  
+      self.frame = md.model.frameId  # added by Hasnat

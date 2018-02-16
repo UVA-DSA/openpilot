@@ -145,6 +145,8 @@ class CarController(object):
     apply_brake = int(clip(brake * BRAKE_MAX, 0, BRAKE_MAX - 1))
     apply_steer = int(clip(-actuators.steer * STEER_MAX, -STEER_MAX, STEER_MAX))
 
+
+    #print STEER_MAX
     # no gas if you are hitting the brake or the user is
     if apply_gas > 0 and (apply_brake != 0 or CS.brake_pressed):
       apply_gas = 0
@@ -152,6 +154,12 @@ class CarController(object):
     # no computer brake if the gas is being pressed
     if CS.car_gas > 0 and apply_brake != 0:
       apply_brake = 0
+
+    ### Incorrect Process Model
+    #apply_brake:HOOK#
+    #apply_gas:HOOK#
+    #apply_steer:HOOK#
+
 
     # any other cp.vl[0x18F]['STEER_STATUS'] is common and can happen during user override. sending 0 torque to avoid EPS sending error 5
     if CS.steer_not_allowed:

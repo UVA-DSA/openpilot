@@ -237,6 +237,7 @@ class Cluster(object):
 
     # lat_corr used to be gated on enabled, now always running
     t_lookahead = interp(self.dRel, t_lookahead_bp, t_lookahead_v)
+
     # correct d_path for lookahead time, considering only cut-ins and no more than 1m impact
     lat_corr = clip(t_lookahead * self.vLat, -1, 0)
 

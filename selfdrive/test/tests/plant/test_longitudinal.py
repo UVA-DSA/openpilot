@@ -26,14 +26,26 @@ maneuvers = [
     'approaching a 40mph car while cruising at 60mph from 100m away',
     duration=30.,
     initial_speed = 60. * CV.MPH_TO_MS,
-    lead_relevancy=True,
+    lead_relevancy=True,  # original value True
+    #lead_relevancy:HOOK#
     initial_distance_lead=100.,
     speed_lead_values = [40.*CV.MPH_TO_MS, 40.*CV.MPH_TO_MS],
     speed_lead_breakpoints = [0., 100.],
     cruise_button_presses = [(CB.DECEL_SET, 1.2), (0, 1.3)]
   )
 ]
-
+'''
+maneuvers = [
+  Maneuver(
+    'while cruising at 40 mph, change cruise speed to 50mph',
+    duration=30.,
+    initial_speed = 40. * CV.MPH_TO_MS,
+    cruise_button_presses = [(CB.DECEL_SET, 2.), (0, 2.3),
+                            (CB.RES_ACCEL, 10.), (0, 10.1),
+                            (CB.RES_ACCEL, 10.2), (0, 10.3)]
+  )
+]
+'''
 def setup_output():
   output_dir = os.path.join(os.getcwd(), 'out/longitudinal')
   if not os.path.exists(os.path.join(output_dir, "index.html")):

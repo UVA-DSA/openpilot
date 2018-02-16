@@ -49,7 +49,7 @@ class AlertManager(object):
 
     # Miscellaneous alerts
     "enable": Alert(
-        "",
+        "Enable",
         "",
         PT.MID, None, "beepSingle", .2, 0., 0.),
 
@@ -373,7 +373,7 @@ class AlertManager(object):
       '''Write the alerts to a file -- Hasnat'''
       alert_file = '/tmp/openpilot/selfdrive/test/tests/plant/out/longitudinal/alerts.txt'
       with open(alert_file, 'a+') as alertfile:
-        alertfile.write('[Alert] %s\n' % self.current_alert)
+        alertfile.write('Alert|| %s || Time(sec)=%s\n' % (self.current_alert, self.alert_start_time))
 
     # start with assuming no alerts
     self.alert_text_1 = ""
