@@ -1,0 +1,9 @@
+title:26_v_target-sub-faultContProc-H2
+location//selfdrive/controls/lib/longcontrol.py//#v_target:HOOK#
+fault 1//if v_target>=(v_cruise * CV.KPH_TO_MS)://v_target-=8.04672//if v_target<0://  v_target= 0
+fault 2//if v_target>=(v_cruise * CV.KPH_TO_MS)://v_target-=10.28192//if v_target<0://  v_target= 0
+fault 3//if v_target>=(v_cruise * CV.KPH_TO_MS)://v_target-=14.75232//if v_target<0://  v_target= 0
+fault 4//if v_target>=(v_cruise * CV.KPH_TO_MS)://v_target-=21.45792//if v_target<0://  v_target= 0
+fault 5//if v_target>=(v_cruise * CV.KPH_TO_MS)://v_target-=22.352//if v_target<0://  v_target= 0
+fault 6//if v_target>=(v_cruise * CV.KPH_TO_MS)://v_target-=26.8224//if v_target<0://  v_target= 0
+Total number of fault cases: 6

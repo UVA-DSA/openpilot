@@ -1,0 +1,13 @@
+title:32_angSteerDes-add-faultContProcLaC-H3
+location//selfdrive/controls/lib/latcontrol.py//#angle_steers_des:HOOK#
+fault 1//if (PL.PP.frame/100)>=3 and (PL.PP.frame/100)<=30://self.angle_steers_des+=(-42)
+fault 2//if (PL.PP.frame/100)>=3 and (PL.PP.frame/100)<=30://self.angle_steers_des+=(-33)
+fault 3//if (PL.PP.frame/100)>=3 and (PL.PP.frame/100)<=30://self.angle_steers_des+=(-18)
+fault 4//if (PL.PP.frame/100)>=3 and (PL.PP.frame/100)<=30://self.angle_steers_des+=(-12)
+fault 5//if (PL.PP.frame/100)>=3 and (PL.PP.frame/100)<=30://self.angle_steers_des+=(-2)
+fault 6//if (PL.PP.frame/100)>=3 and (PL.PP.frame/100)<=30://self.angle_steers_des+=(9)
+fault 7//if (PL.PP.frame/100)>=3 and (PL.PP.frame/100)<=30://self.angle_steers_des+=(16)
+fault 8//if (PL.PP.frame/100)>=3 and (PL.PP.frame/100)<=30://self.angle_steers_des+=(32)
+fault 9//if (PL.PP.frame/100)>=3 and (PL.PP.frame/100)<=30://self.angle_steers_des+=(39)
+fault 10//if (PL.PP.frame/100)>=3 and (PL.PP.frame/100)<=30://self.angle_steers_des+=(45)
+Total number of fault cases: 10

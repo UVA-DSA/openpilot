@@ -1,0 +1,17 @@
+title:16_angSteer-add-incProcPlant-H3
+location//selfdrive/test/plant/plant.py//#angle_steer:HOOK#
+fault 1//if self.current_time()>3.0://self.angle_steer+=(-0.7854)
+fault 2//if self.current_time()>3.0://self.angle_steer+=(-0.6604)
+fault 3//if self.current_time()>3.0://self.angle_steer+=(-0.5354)
+fault 4//if self.current_time()>3.0://self.angle_steer+=(-0.4104)
+fault 5//if self.current_time()>3.0://self.angle_steer+=(-0.2854)
+fault 6//if self.current_time()>3.0://self.angle_steer+=(-0.1604)
+fault 7//if self.current_time()>3.0://self.angle_steer+=(-0.0354)
+fault 8//if self.current_time()>3.0://self.angle_steer+=(0.0896)
+fault 9//if self.current_time()>3.0://self.angle_steer+=(0.2146)
+fault 10//if self.current_time()>3.0://self.angle_steer+=(0.3396)
+fault 11//if self.current_time()>3.0://self.angle_steer+=(0.4646)
+fault 12//if self.current_time()>3.0://self.angle_steer+=(0.5896)
+fault 13//if self.current_time()>3.0://self.angle_steer+=(0.7146)
+fault 14//if self.current_time()>3.0://self.angle_steer+=(0.7854)
+Total number of fault cases: 14

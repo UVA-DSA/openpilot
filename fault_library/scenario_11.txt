@@ -1,0 +1,9 @@
+title:11_v_rel-sub-incProcRad-H2
+location//selfdrive/controls/radard.py//#d_rel:HOOK#
+fault 1//if tracks[ids].dRel>=200.0://tracks[ids].vRel-=5.81152
+fault 2//if tracks[ids].dRel>=200.0://tracks[ids].vRel-=12.51712
+fault 3//if tracks[ids].dRel>=200.0://tracks[ids].vRel-=16.98752
+fault 4//if tracks[ids].dRel>=200.0://tracks[ids].vRel-=21.90496
+fault 5//if tracks[ids].dRel>=200.0://tracks[ids].vRel-=24.14016
+fault 6//if tracks[ids].dRel>=200.0://tracks[ids].vRel-=26.8224
+Total number of fault cases: 6

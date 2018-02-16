@@ -1,0 +1,9 @@
+title:23_v_target-add-faultContProc-H1
+location//selfdrive/controls/lib/longcontrol.py//#v_target:HOOK#
+fault 1//if v_target<(v_cruise * CV.KPH_TO_MS)://v_target+=5.81152//v_target = min(v_target, v_cruise * CV.KPH_TO_MS)
+fault 2//if v_target<(v_cruise * CV.KPH_TO_MS)://v_target+=11.62304//v_target = min(v_target, v_cruise * CV.KPH_TO_MS)
+fault 3//if v_target<(v_cruise * CV.KPH_TO_MS)://v_target+=16.09344//v_target = min(v_target, v_cruise * CV.KPH_TO_MS)
+fault 4//if v_target<(v_cruise * CV.KPH_TO_MS)://v_target+=20.1168//v_target = min(v_target, v_cruise * CV.KPH_TO_MS)
+fault 5//if v_target<(v_cruise * CV.KPH_TO_MS)://v_target+=25.03424//v_target = min(v_target, v_cruise * CV.KPH_TO_MS)
+fault 6//if v_target<(v_cruise * CV.KPH_TO_MS)://v_target+=26.8224//v_target = min(v_target, v_cruise * CV.KPH_TO_MS)
+Total number of fault cases: 6

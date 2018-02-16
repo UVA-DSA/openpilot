@@ -1,0 +1,14 @@
+title:19_brake-stuckV-incProcCarcontroller-H2
+location//selfdrive/car/honda/carcontroller.py//#apply_brake:HOOK#
+fault 1//if (frame/100)>=3 and (frame/100)<=30://apply_brake=15
+fault 2//if (frame/100)>=3 and (frame/100)<=30://apply_brake=35
+fault 3//if (frame/100)>=3 and (frame/100)<=30://apply_brake=68
+fault 4//if (frame/100)>=3 and (frame/100)<=30://apply_brake=86
+fault 5//if (frame/100)>=3 and (frame/100)<=30://apply_brake=116
+fault 6//if (frame/100)>=3 and (frame/100)<=30://apply_brake=136
+fault 7//if (frame/100)>=3 and (frame/100)<=30://apply_brake=155
+fault 8//if (frame/100)>=3 and (frame/100)<=30://apply_brake=183
+fault 9//if (frame/100)>=3 and (frame/100)<=30://apply_brake=206
+fault 10//if (frame/100)>=3 and (frame/100)<=30://apply_brake=231
+fault 11//if (frame/100)>=3 and (frame/100)<=30://apply_brake=255
+Total number of fault cases: 11

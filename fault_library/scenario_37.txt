@@ -1,0 +1,4 @@
+title:37_vision-effect-noisyInputManeuver-H3
+location//selfdrive/test/plant/maneuver.py//#visionFault:HOOK#
+fault 1//if (self.frameIdx/100.0)>=5.0://left_line=lanes[0]//right_line=lanes[1]
+Total number of fault cases: 1

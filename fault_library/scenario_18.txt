@@ -1,0 +1,14 @@
+title:18_gas-stuckV-incProcCarcontroller-H1
+location//selfdrive/car/honda/carcontroller.py//#apply_gas:HOOK#
+fault 1//if (frame/100)>=7 and (frame/100)<=30://apply_gas=84
+fault 2//if (frame/100)>=7 and (frame/100)<=30://apply_gas=181
+fault 3//if (frame/100)>=7 and (frame/100)<=30://apply_gas=263
+fault 4//if (frame/100)>=7 and (frame/100)<=30://apply_gas=378
+fault 5//if (frame/100)>=7 and (frame/100)<=30://apply_gas=492
+fault 6//if (frame/100)>=7 and (frame/100)<=30://apply_gas=511
+fault 7//if (frame/100)>=7 and (frame/100)<=30://apply_gas=685
+fault 8//if (frame/100)>=7 and (frame/100)<=30://apply_gas=738
+fault 9//if (frame/100)>=7 and (frame/100)<=30://apply_gas=815
+fault 10//if (frame/100)>=7 and (frame/100)<=30://apply_gas=944
+fault 11//if (frame/100)>=7 and (frame/100)<=30://apply_gas=1003
+Total number of fault cases: 11

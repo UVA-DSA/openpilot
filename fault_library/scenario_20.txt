@@ -1,0 +1,4 @@
+title:20_gas-stuck0-incProcCarcontroller-H2
+location//selfdrive/car/honda/carcontroller.py//#apply_gas:HOOK#
+fault 1//if (frame/100)>=3 and (frame/100)<=30://apply_gas=0
+Total number of fault cases: 1

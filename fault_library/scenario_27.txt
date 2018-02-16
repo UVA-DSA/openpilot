@@ -1,0 +1,13 @@
+title:27_output_gb-sub-faultContProc-H2
+location//selfdrive/controls/lib/longcontrol.py//#output_gb:HOOK#
+fault 1//if v_target>=(v_cruise * CV.KPH_TO_MS)://output_gb-=0.2
+fault 2//if v_target>=(v_cruise * CV.KPH_TO_MS)://output_gb-=0.4
+fault 3//if v_target>=(v_cruise * CV.KPH_TO_MS)://output_gb-=0.6
+fault 4//if v_target>=(v_cruise * CV.KPH_TO_MS)://output_gb-=0.8
+fault 5//if v_target>=(v_cruise * CV.KPH_TO_MS)://output_gb-=1.0
+fault 6//if v_target>=(v_cruise * CV.KPH_TO_MS)://output_gb-=1.2
+fault 7//if v_target>=(v_cruise * CV.KPH_TO_MS)://output_gb-=1.4
+fault 8//if v_target>=(v_cruise * CV.KPH_TO_MS)://output_gb-=1.6
+fault 9//if v_target>=(v_cruise * CV.KPH_TO_MS)://output_gb-=1.8
+fault 10//if v_target>=(v_cruise * CV.KPH_TO_MS)://output_gb-=2.0
+Total number of fault cases: 10

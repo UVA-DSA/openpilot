@@ -1,0 +1,13 @@
+title:29_leftPoly-rand-faultContProcPP-H3
+location//selfdrive/controls/lib/pathplanner.py//#plr_poly:HOOK#
+fault 1//if (md.model.frameId/100)>=3 and (md.model.frameId/100)<=30://l_poly[3]+=(-4.89418735761)
+fault 2//if (md.model.frameId/100)>=3 and (md.model.frameId/100)<=30://l_poly[3]+=(-3.37255608636)
+fault 3//if (md.model.frameId/100)>=3 and (md.model.frameId/100)<=30://l_poly[3]+=(-2.69337574817)
+fault 4//if (md.model.frameId/100)>=3 and (md.model.frameId/100)<=30://l_poly[3]+=(-1.10390285371)
+fault 5//if (md.model.frameId/100)>=3 and (md.model.frameId/100)<=30://l_poly[3]+=(-0.739953274796)
+fault 6//if (md.model.frameId/100)>=3 and (md.model.frameId/100)<=30://l_poly[3]+=(0.504845619586)
+fault 7//if (md.model.frameId/100)>=3 and (md.model.frameId/100)<=30://l_poly[3]+=(1.12937299494)
+fault 8//if (md.model.frameId/100)>=3 and (md.model.frameId/100)<=30://l_poly[3]+=(2.84256867675)
+fault 9//if (md.model.frameId/100)>=3 and (md.model.frameId/100)<=30://l_poly[3]+=(3.49419495156)
+fault 10//if (md.model.frameId/100)>=3 and (md.model.frameId/100)<=30://l_poly[3]+=(4.28130654389)
+Total number of fault cases: 10

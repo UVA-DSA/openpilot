@@ -1,0 +1,15 @@
+title:33_output_steer-add-faultContProcLaC-H3
+location//selfdrive/controls/lib/latcontrol.py//#output_steer:HOOK#
+fault 1//if (PL.PP.frame/100)>=3 and (PL.PP.frame/100)<=30://output_steer+=(-1.0667)
+fault 2//if (PL.PP.frame/100)>=3 and (PL.PP.frame/100)<=30://output_steer+=(-0.8667)
+fault 3//if (PL.PP.frame/100)>=3 and (PL.PP.frame/100)<=30://output_steer+=(-0.6667)
+fault 4//if (PL.PP.frame/100)>=3 and (PL.PP.frame/100)<=30://output_steer+=(-0.4667)
+fault 5//if (PL.PP.frame/100)>=3 and (PL.PP.frame/100)<=30://output_steer+=(-0.2667)
+fault 6//if (PL.PP.frame/100)>=3 and (PL.PP.frame/100)<=30://output_steer+=(-0.0667)
+fault 7//if (PL.PP.frame/100)>=3 and (PL.PP.frame/100)<=30://output_steer+=(0.1333)
+fault 8//if (PL.PP.frame/100)>=3 and (PL.PP.frame/100)<=30://output_steer+=(0.3333)
+fault 9//if (PL.PP.frame/100)>=3 and (PL.PP.frame/100)<=30://output_steer+=(0.5333)
+fault 10//if (PL.PP.frame/100)>=3 and (PL.PP.frame/100)<=30://output_steer+=(0.7333)
+fault 11//if (PL.PP.frame/100)>=3 and (PL.PP.frame/100)<=30://output_steer+=(0.9333)
+fault 12//if (PL.PP.frame/100)>=3 and (PL.PP.frame/100)<=30://output_steer+=(1.0667)
+Total number of fault cases: 12

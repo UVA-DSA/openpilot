@@ -1,0 +1,18 @@
+title:25_a_target-sub-faultContProc-H2
+location//selfdrive/controls/lib/adaptivecruise.py//#a_targetH2:HOOK#
+fault 1//if l1 is not None and l1.status is False://a_target-=0.2//a_target = np.clip(a_target, a_lim[0], a_lim[1])
+fault 2//if l1 is not None and l1.status is False://a_target-=0.4//a_target = np.clip(a_target, a_lim[0], a_lim[1])
+fault 3//if l1 is not None and l1.status is False://a_target-=0.6//a_target = np.clip(a_target, a_lim[0], a_lim[1])
+fault 4//if l1 is not None and l1.status is False://a_target-=0.8//a_target = np.clip(a_target, a_lim[0], a_lim[1])
+fault 5//if l1 is not None and l1.status is False://a_target-=1.0//a_target = np.clip(a_target, a_lim[0], a_lim[1])
+fault 6//if l1 is not None and l1.status is False://a_target-=1.2//a_target = np.clip(a_target, a_lim[0], a_lim[1])
+fault 7//if l1 is not None and l1.status is False://a_target-=1.4//a_target = np.clip(a_target, a_lim[0], a_lim[1])
+fault 8//if l1 is not None and l1.status is False://a_target-=1.6//a_target = np.clip(a_target, a_lim[0], a_lim[1])
+fault 9//if l1 is not None and l1.status is False://a_target-=1.8//a_target = np.clip(a_target, a_lim[0], a_lim[1])
+fault 10//if l1 is not None and l1.status is False://a_target-=2.0//a_target = np.clip(a_target, a_lim[0], a_lim[1])
+fault 11//if l1 is not None and l1.status is False://a_target-=2.2//a_target = np.clip(a_target, a_lim[0], a_lim[1])
+fault 12//if l1 is not None and l1.status is False://a_target-=2.4//a_target = np.clip(a_target, a_lim[0], a_lim[1])
+fault 13//if l1 is not None and l1.status is False://a_target-=2.6//a_target = np.clip(a_target, a_lim[0], a_lim[1])
+fault 14//if l1 is not None and l1.status is False://a_target-=2.8//a_target = np.clip(a_target, a_lim[0], a_lim[1])
+fault 15//if l1 is not None and l1.status is False://a_target-=3.0//a_target = np.clip(a_target, a_lim[0], a_lim[1])
+Total number of fault cases: 15

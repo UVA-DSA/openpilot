@@ -1,0 +1,23 @@
+title:10_d_rel-sub-incProcRad-H2
+location//selfdrive/controls/radard.py//#d_rel:HOOK#
+fault 1//if tracks[ids].dRel>=200.0://tracks[ids].dRel-=14//if tracks[ids].dRel<0://  tracks[ids].dRel= 0
+fault 2//if tracks[ids].dRel>=200.0://tracks[ids].dRel-=23//if tracks[ids].dRel<0://  tracks[ids].dRel= 0
+fault 3//if tracks[ids].dRel>=200.0://tracks[ids].dRel-=32//if tracks[ids].dRel<0://  tracks[ids].dRel= 0
+fault 4//if tracks[ids].dRel>=200.0://tracks[ids].dRel-=45//if tracks[ids].dRel<0://  tracks[ids].dRel= 0
+fault 5//if tracks[ids].dRel>=200.0://tracks[ids].dRel-=52//if tracks[ids].dRel<0://  tracks[ids].dRel= 0
+fault 6//if tracks[ids].dRel>=200.0://tracks[ids].dRel-=61//if tracks[ids].dRel<0://  tracks[ids].dRel= 0
+fault 7//if tracks[ids].dRel>=200.0://tracks[ids].dRel-=70//if tracks[ids].dRel<0://  tracks[ids].dRel= 0
+fault 8//if tracks[ids].dRel>=200.0://tracks[ids].dRel-=83//if tracks[ids].dRel<0://  tracks[ids].dRel= 0
+fault 9//if tracks[ids].dRel>=200.0://tracks[ids].dRel-=98//if tracks[ids].dRel<0://  tracks[ids].dRel= 0
+fault 10//if tracks[ids].dRel>=200.0://tracks[ids].dRel-=101//if tracks[ids].dRel<0://  tracks[ids].dRel= 0
+fault 11//if tracks[ids].dRel>=200.0://tracks[ids].dRel-=117//if tracks[ids].dRel<0://  tracks[ids].dRel= 0
+fault 12//if tracks[ids].dRel>=200.0://tracks[ids].dRel-=121//if tracks[ids].dRel<0://  tracks[ids].dRel= 0
+fault 13//if tracks[ids].dRel>=200.0://tracks[ids].dRel-=134//if tracks[ids].dRel<0://  tracks[ids].dRel= 0
+fault 14//if tracks[ids].dRel>=200.0://tracks[ids].dRel-=149//if tracks[ids].dRel<0://  tracks[ids].dRel= 0
+fault 15//if tracks[ids].dRel>=200.0://tracks[ids].dRel-=159//if tracks[ids].dRel<0://  tracks[ids].dRel= 0
+fault 16//if tracks[ids].dRel>=200.0://tracks[ids].dRel-=165//if tracks[ids].dRel<0://  tracks[ids].dRel= 0
+fault 17//if tracks[ids].dRel>=200.0://tracks[ids].dRel-=171//if tracks[ids].dRel<0://  tracks[ids].dRel= 0
+fault 18//if tracks[ids].dRel>=200.0://tracks[ids].dRel-=184//if tracks[ids].dRel<0://  tracks[ids].dRel= 0
+fault 19//if tracks[ids].dRel>=200.0://tracks[ids].dRel-=197//if tracks[ids].dRel<0://  tracks[ids].dRel= 0
+fault 20//if tracks[ids].dRel>=200.0://tracks[ids].dRel-=203//if tracks[ids].dRel<0://  tracks[ids].dRel= 0
+Total number of fault cases: 20

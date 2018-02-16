@@ -1,0 +1,4 @@
+title:5_radar-none-incRADAR-H1
+location//selfdrive/test/plant/plant.py//#radar_none:HOOK#
+fault 1//if d_rel>=50 and d_rel<=200://none
+Total number of fault cases: 1

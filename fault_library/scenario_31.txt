@@ -1,0 +1,13 @@
+title:31_d_pathPoly-rand-faultContProcPP-H3
+location//selfdrive/controls/lib/pathplanner.py//#d_poly:HOOK#
+fault 1//if (md.model.frameId/100)>=3 and (md.model.frameId/100)<=30://self.d_poly[3]+=(-4.61957224505)
+fault 2//if (md.model.frameId/100)>=3 and (md.model.frameId/100)<=30://self.d_poly[3]+=(-3.55008680781)
+fault 3//if (md.model.frameId/100)>=3 and (md.model.frameId/100)<=30://self.d_poly[3]+=(-2.42830932674)
+fault 4//if (md.model.frameId/100)>=3 and (md.model.frameId/100)<=30://self.d_poly[3]+=(-1.86086343762)
+fault 5//if (md.model.frameId/100)>=3 and (md.model.frameId/100)<=30://self.d_poly[3]+=(-0.685273498105)
+fault 6//if (md.model.frameId/100)>=3 and (md.model.frameId/100)<=30://self.d_poly[3]+=(0.619697967534)
+fault 7//if (md.model.frameId/100)>=3 and (md.model.frameId/100)<=30://self.d_poly[3]+=(1.98983105048)
+fault 8//if (md.model.frameId/100)>=3 and (md.model.frameId/100)<=30://self.d_poly[3]+=(2.47033759061)
+fault 9//if (md.model.frameId/100)>=3 and (md.model.frameId/100)<=30://self.d_poly[3]+=(3.27454276378)
+fault 10//if (md.model.frameId/100)>=3 and (md.model.frameId/100)<=30://self.d_poly[3]+=(4.69076994181)
+Total number of fault cases: 10

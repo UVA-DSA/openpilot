@@ -1,0 +1,4 @@
+title:17_brake-stuck0-incProcCarcontroller-H1
+location//selfdrive/car/honda/carcontroller.py//#apply_brake:HOOK#
+fault 1//if (frame/100)>=7 and (frame/100)<=30://apply_brake=0
+Total number of fault cases: 1

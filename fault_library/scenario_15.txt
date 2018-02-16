@@ -1,0 +1,13 @@
+title:15_bothLane-rand-incProcPlant-H3
+location//selfdrive/test/plant/maneuver.py//#md:HOOK#
+fault 1//if plant.current_time()>3.0://self.lLane+=(-4.32004572652)//self.rLane+=(-0.746518252608)
+fault 2//if plant.current_time()>3.0://self.lLane+=(-3.3966241357)//self.rLane+=(-0.0577564520433)
+fault 3//if plant.current_time()>3.0://self.lLane+=(-2.10469179397)//self.rLane+=(0.980408849735)
+fault 4//if plant.current_time()>3.0://self.lLane+=(-1.82938324383)//self.rLane+=(2.44473237825)
+fault 5//if plant.current_time()>3.0://self.lLane+=(-0.953863890017)//self.rLane+=(3.05126920941)
+fault 6//if plant.current_time()>3.0://self.lLane+=(0.550012461618)//self.rLane+=(4.2603168519)
+fault 7//if plant.current_time()>3.0://self.lLane+=(1.81462962559)//self.rLane+=(4.81745990694)
+fault 8//if plant.current_time()>3.0://self.lLane+=(2.45472177314)//self.rLane+=(6.46238638281)
+fault 9//if plant.current_time()>3.0://self.lLane+=(3.43565289359)//self.rLane+=(6.83449458765)
+fault 10//if plant.current_time()>3.0://self.lLane+=(4.8744770972)//self.rLane+=(8.0276121404)
+Total number of fault cases: 10
